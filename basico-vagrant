@@ -1,0 +1,39 @@
+O Vagrant é uma ferramenta que permite a criação, configuração e backup rápido de
+máquinas virtuais de forma automatizada através de comandos via terminal. 
+
+* Ex para instalação de uma máquina:
+- vagrant init nrel/CentOS-6.5-x86_64 //Baixa a máquina caso não tenha a imagem baixada
+- vagrant up // Sobe a máquina
+
+Destruindo uma máquina:
+- vagrant destroy
+O Vagrant cria uma máquina com a porta setada em 2222, pois por padrão a porta física
+de SSH no linux já é a 22. Podemos acessar a máquina virtual dessa forma: 127.0.0.1:2222
+
+* Redirecinamento "forwarded port" no virtualBox:
+Ao acessar a porta 8080 ele vai redirecionar para porta 80 do CentOS. Para realizar essa configuração se faz
+necessário editar o arquivo Vagrantfile.
+
+- sudo nano Vagrantfile
+
+# config.vm.network "forwarded port", guest:80, host: 8080 // Remova a tralha, referente ao comentário desta linha.  
+
+Agora quando for realizado o comando "vagrant up", a máquina já será levantada tendo sua porta 80 referenciada na porta 8080 da máquina física. 
+
+* Criando Spnapshot da máquina:
+
+- vagrant snapshot save nomeDoSnapshot // Nome do snapshot que será vinculado a máquina virtual, é uma espécie de versionamento do estado da máquina. 
+- vagrant snapshot delete nomeDoSnapshot // Esses snapshots ocupam espaço em disco, é uma boa deletar os snaps mais antigos. 
+guest: porta da máquina virtual
+host: porta física da máquina
+
+Por default, o apache sobe o serviço na porta 80, que é a porta reservada para o protocolo HTTP
+portanto, caso tenha o apache instalado em sua máquina física e tente acessar a porta 80, será executado o 
+Apache instalado da máquina física. 
+
+Restaurando uma imagem do snapshot:
+
+- vagrant restore nomeDosnapshot
+
+- vagrant snapshot restore aula001 // Acesso no terminal da máquina física.
+Não é possível subir dois serviços no mesmo IP, porta e máquina.
