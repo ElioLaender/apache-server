@@ -1,0 +1,37 @@
+* Informa o status atual do serviço
+- service httpd status 
+
+* Levanta o servidor
+- service httpd start
+
+* Verificar o caminho onde o Apache foi instalado (pasta com os binários)
+- ps aux | grep httpd
+
+* Verifica a versão do apache através do binário
+- /usr/sbin/httpd -v
+
+* Exibe todas as configurações de diretivas suportadas pela instalação
+- /usr/sbin/httpd -L
+
+* Lista todos os módulos carregados pelo apache
+- /usr/sbin/httpd -M
+Ps: Existem módulos static(compilados com o binário) e shared(compilados a parte, são compartilhados entre o sistema operacional e o binário httpd
+ou seja, o apache busca o binário por no SO, Ex no diretório /etc/httpd/modules/)
+
+-------------------------------------------------------
+
+Verificando a estrutura do apache:
+
+Dir: etc/httpd
+
+/config 
+  httpd.conf //principal arquivo de configuração, possui todas as configurações para o funcionamento do apache
+  magic 
+/conf.d //possui todos os scripts que fazemos include no arquivo httpd.conf
+/logs // arquivos de log do apache e separado por virtual host
+/modules // possui todos os módulos usados pelo apache pré-compilados
+/run
+  httpd.pid // Informa qual o número do processo do apache, para podermos verificar mais detalhes atráves do "ps aux | grep 1740
+
+--------------------------------------------------------
+  

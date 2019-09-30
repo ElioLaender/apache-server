@@ -5,6 +5,8 @@ máquinas virtuais de forma automatizada através de comandos via terminal.
 - vagrant init nrel/CentOS-6.5-x86_64 //Baixa a máquina caso não tenha a imagem baixada
 - vagrant up // Sobe a máquina
 
+PS: A máquina será criada no diretório corrente que o terminal estiver aberto. Quando a máquina for gerada, o diretório estará com um arquivo chamado "Vagrant"
+
 Destruindo uma máquina:
 - vagrant destroy
 O Vagrant cria uma máquina com a porta setada em 2222, pois por padrão a porta física

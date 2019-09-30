@@ -1,0 +1,81 @@
+Apache webserver:
+
+- Apache webserver é opensource
+- Permite multiprocessamento
+    Suporta acessos simuntâneos sem necessidade de criar uma fila de espera entre os usuários. 
+- Dividido em dois componentes, sendo core e módulos
+  CORE: Funcionalidades vitais do sistema
+  MODULOS: Extensões adicionadas conforme necessidade. 
+- Permite virtualizar websites
+- Bem aceito pela comunidade
+
+Virtual Hosts Apache:
+
+- Permite utilizar o mesmo servidor para hospedar diversas aplicações. Pode ser baseado em Ips, 
+podendo ser adicionado vários Ips para um mesmo servidor, sendo cada ip representando um virtual host. 
+
+-----------------------------------------------------------------------------------------------
+
+Configurações do sistema operacional Linux:
+
+FileDescriptor: É um ponteiro utilizado pelo sistema operacional para acessar arquivos ou input output
+de recursos, por exemplo conexão de rede, onde para cada acesso de recurso é aberto um "filedescriptor". 
+
+Os sistemas baseados em linux, por exemplo o Ubunto, possuem por padrão um openFile de 1024, que não atende
+sistemas de alta criticidade. Para aumentar esse limite imposto pelo sistema operacional, é necessário alterar 
+o limits.conf Segue abaixo um script para alterar essa configuração:
+
+//////tuningUlimit.sh////////////
+#!/bin/bash
+sudo sh -c "echo -e '* soft    nofile  1024\n' >> /etc/security/limits.conf" // Limite mínimo, poderia setar aqui o valor do máximo também
+sudo sh -c "echo -e '* hard    nofile  65535\n' >> /etc/security/limits.conf" // Limite máximo
+sudo sh -c "echo -e 'sesssion required /lib64/security/pam_limits.so\n' >> /etc/pam.d/login"
+sudo sh -c "echo -e 'fs.file-max = 65535\n' >> /etc/sysctl.conf" // Setando o limite para o máximo possível. 
+sudo sysctl -p
+cat /proc/sys/fs/file-max // Representa a saída do comando fs.file-max
+ulimit -n -H // lista a quantidade de arquivos para serem abertos. 
+
+//////////disable-ipv6.sh///////// Exemplo para desabilitar o IPV6
+#!/bin/bash
+sudo sh -c "sed -i 's/IPV6INIT\=\"yes\"/IPV6INIT\=\"no\"/g' /etc/sysconfig/network-scripts/ifcfg-eth0"
+sudo sh -c "echo -e 'net.ipv6.conf.all.disable_ipv6 = 1\n' >> /etc/sysctl.conf"
+sudo sh -c "echo -e 'NETWORKING_IPV6=no\n' >> /etc/sysconfig/network"
+
+------------------------------------------------------------------------------------------------
+
+Instalação do Apache via repositório: (Ex no CentOS)
+
+sudo yum install httpd // Basta pressionar o 'y' para aceitar baixar as dependências e a instalação será concluída. 
+
+subir o serviço: sudo service httpd start
+
+verificar execução: sudo service httpd status // estar como running, não necessariamente quer dizer que está funcionando perfeitamente. 
+
+Comando para verificar comunicação com webserver: sudo telnet localhost 80 // O telnet precisa ser instalado caso não tenha, nesse exemplo ele está escutando a 
+porta padrão do serviço http, que está sendo fornecido no nosso caso pelo apache. 
+
+-------------------------------------------------------------------------------------------------
+
+Instalação do Apache por compilação do código fonte:
+
+Baixar o Apache WebServer diretamente no site oficial: https://httpd.apache.org/download.cgi
+
+No exemplo foi baixado um arquivo tar.gz, precisamos descompactar o mesmo:
+
+- tar -xvf httpd-2.4.41.tar.gz
+
+- Acesar a pasta descompactada: cd httpd-2.4.41.tar.gz
+
+- Realizando chamada na configuração passando os parâmetros para habilitar recursos básicos do apache: 
+./configure --enable-mods-shared=few --prefix=/opt/apache_compilado // No prefix é passado o caminho onde o apache será instalado.
+
+-------------------------------------------------------------------------------------
+
+Diferença entre Instalar o Apache através do repositório e através da compilação:
+
+Quando instalamos através do repositório, será baiado diversos módulos, muitos sem utilidade para 
+a finalidade do projeto, ocorrendo maior consumo da máquina ao executar o apache webserver. 
+Instalando a versão compilada, poderá ser definido quais configurações serão necessárias, podendo optar também
+pelo parâmetro "--enable-mods-shared=few", que instala apenas os módulos tidos como essenciais pela comunidade. 
+
+

@@ -1,0 +1,32 @@
+Criticidade de logs (LogLevels):
+
+Os logs no apache podem ser divididos em duas categorias, sendo access log ou error log.
+
+Acess Log: Capacidade de acompanhar o acesso aos recursos fornecidos, gerando relatórios e estatísticas.
+Error log: Saída de erro padrão do Apache/Virtual Host. 
+
+Modificando a criticidade do log do Apache:
+
+cd /etc/httpd/conf
+
+vi httpd.conf // abrir arquivo para edição.
+
+Encontrar a configuraçao de "LogLevel"
+
+Por padrão, o LogLevel no apache vem como "warn", nesse exemplo, vamos alterar o LogLevel
+para debug, para termos logs mais detalhados, dessa forma ficaria:
+
+"LogLevel" warn para "LogLevel debug"
+
+Após a configuraçao, reinicie o serviço caso o mesmo esteja rodando. 
+
+Atenção: Utilizar a forma de escrita em debug apenas quando o sistema estiver passando por erros, pois
+quanto mais leitura/escrita tiver no processo, mais lento se torna o sistema. 
+
+
+----------------------------------------------------------------------
+
+Formato de exibição do log (LogFormat):
+
+
+

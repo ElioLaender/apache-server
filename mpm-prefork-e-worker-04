@@ -1,0 +1,71 @@
+Devido a proposta do Apache de rodar em diversos tipos de ambiente, devido a grande quantidade 
+de features, o apache foi dividido em modulos e submodulos, visando melhor desempenho das máquinas.
+
+MPM(Multi Processing Modules): Tem por função cuidar das funcionalidades básicas do servidor. Por exemplo, gerenciando as portas do servidor, 
+verificando se é a 80http ou 443https, faz o redirecionamento dos requests para as threads ou processos, dependendo do tipo de módulo utilizado. 
+
+MPM Prefork:
+- Robusto, realiza separação em processos, tornando as solicitações independentes, ou seja, caso um processos falhe, outros
+processos continuarão. 
+
+- Alto consumo de recurso, principalmente de memória para que seja mantido vários processos em paralelo. 
+
+- Suporta módulos que não são thread-safe (Cuida que apenas um recurso altere determinado dado por vez?)
+
+- Um request por processo
+
+Configuração default do Prefork:
+
+<IfModule prefork.c>
+StartServers 8
+MinSpareServer 5
+MaxSpareServer 20
+ServerLimit 256
+MaxClients 256
+MaxRequestsPerChild 4000
+</IfModule>
+
+StartServers: Quantidae de processos filhos no startup do Apache
+MinSpareServer: Quantidade mínima de processos idle (idle -> Processos que ficam aguardando uma requisição) 
+MaxSpareServer: Limite máximo de processos idle que não estão capturando nenhum request
+ServerLimit: Quantidade máxima de clientes concorrentes
+MaxRequestsPerChild: Número máximo de requests que um processo filho pode executar antes de morrer
+
+---------------------------------------------------------------------------------
+
+MPM Worker:
+
+- Utiliza menos recursos do S.O
+- Não é thread-safe
+- Utiliza threads para atender os requests, então um processo pode atender mais de um cliente ao mesmo tempo
+
+No MPM Worker, os processos como no Prefork, podem ter filhos, a diferença é que no Worker, os filhos também podem ter filhos,
+aumentando a quantidade de clientes atendidos. (O filho de um filho pode ter filho? rs..)
+
+
+Configuração default do MPM Worker:
+
+<IfModule worker.c>
+StartServers 4
+MaxClients 300
+MinSpareThreads 25
+MaxSpareThreads 75
+ThreadsPerChield 0
+MaxRequestsPerChild 0
+</IfModule>
+
+StartServers: Quantidade de processos filhos no startup do Apache.
+MaxClients: Quantidade de clientes simintâneos que podem ser atendidos. 
+MinSpareServer: Quantidade mínima de threads idle
+MaxSpareServer: Quantidade máxima threads idle
+ThreadsPerChields: Número constante de threads em cada processo filho
+MaxRequestsPerChild: Número máximo de requests que um processo filho pode executar antes de morrer. (Zero não tem limiter) 
+
+--------------------------------------------------------------------------
+
+Conclusão:
+
+Prefork: Mais estabilidade, menos performance
+Worker: Menos estabilidade mais performance
+
+PS: Limitações do Worker: Não funciona em módulos antigos ou que não são thread-safe
