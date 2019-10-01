@@ -1,0 +1,43 @@
+TRACE: A funcionalidade de trace em conjunto ao cross site scripting, permite ter acesso a informações sensíveis do cliente. 
+tais como cookies e dados de autenticação. Por esse motivo, é muito importante que o trace esteja desabilitado. Para que esses dados não 
+fiquem expostos, devemos por segurança manter o trace sempre como off. 
+
+TraceEnable off
+
+$ curl -X TRACE http://www.funedi.edu.br/
+
+Caso o trace não esteja desabilitado, será retornado informações importantes que facilitam ataques
+
+------------------------------------------------------
+
+Ocultando versão do Apache:
+
+Quando realizamos o comando de trace, mesmo estando desabilitado, é possível visualizar a versão do Apache
+Isso torna nosso sistema um pouco mais vulnerável, pois o atacande pode buscar por vulnerabilidades específicas dados
+versão do apache que estamos utilizando.
+
+No arquivo http.conf, temos que alterar:
+
+ServerTokens Prod
+ServerSignature off
+
+Basta salvar e reiniar o Apache
+
+-------------------------------------------------------
+
+Negar acesso a determinados diretórios:
+
+Na configuração do virtualhost, adicionamos a tag Directory
+
+<virtualhost *:80>
+  ServerName www.teste.com
+  <Directory "/var/www/diretorio/em/questao"> // Informa qual o diretório terá a restrição
+    Order allow, denny 
+    Allow from all 
+    <Files "nomeArquivo.txt">
+      Allow from all // libera o arquivo 
+    </Files>  
+  </Directory>
+</virtualhost>
+
+--------------------------------------------------------

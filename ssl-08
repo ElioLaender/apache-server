@@ -1,0 +1,15 @@
+SSL conceitos:
+
+* SSL: Secure Sockets Layer
+
+- É um padrão de segurança para estabelecer comunicação encriptada entre o servidor web e o browser.
+
+- Essa conexão garante que todos os dados tramitados entre o webservers e o browser devem ser privados e com integridade
+
+* Impacto positivo no uso de certificados SSL:
+
+- Websites que possuem certificado ssl são exibidos com um cadeado, dando ao usuário a segunrança de que está em uma
+página segura. 
+
+- O Google rankeia melhor as páginas que possuem certifica ssl. 
+

@@ -1,0 +1,42 @@
+A monitoria é importante para sabermos a quantidade de recursos que estão sendo 
+requisitadas do servidor, podemos saber se é necessário aumentar o hardware da máquina. 
+
+
+mod_status: É um recurso do apache que permite visualizarmos a carga que o webserver está recebendo, tais como
+a quantidade de requisições simuntâneas. Isso pode ser feito através de interface gráfica. É um html feito 
+com html puro. Ele grava apenas o que for capturado no momento, não sendo possível analisar histórico de uso passado. 
+
+Configurando o "mod_status"
+
+- Acessar cd /etc/httpd/conf 
+- Abrir: httpd.conf
+
+Em LoadModule verifique se o mod_status.so está carregado, caso estiver, temos acesso a página em html puro com as informações.
+
+Dentro da configuração do nosso virtual host adicionamos a chamada da seguinte forma:
+
+<VirtualHost *:80>
+  ServerName www.teste.com.br
+  <Location /server-status>
+    SetHandler server-status
+    Order deny,allow
+    Allow from .example.com // Necessário para habilitar para ecesso externo
+  </Location>
+</VirtualHost>
+
+É necessário habilitar a configuração ExtendedStatus, ficando da seguinte forma
+
+#ExtendedStatus on //Remover o comentário caso necessário. É necessário reinicar o servidor
+
+
+----------------------------------------------------------------------
+
+GoAccess: É uma ferramenta de linha de comando que podemos instalar no nosso sistema, a partir dela podemos
+ver em tempo real as requisições que o sistema está recebendo. 
+
+https://goaccess.io/
+
+
+htop: O htop também é uma ferramenta de linha de comando, porém mais voltada para monitoria do
+sistema operacional, porém também podemos ver os processos consumidos pelo Apache.
+

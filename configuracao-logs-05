@@ -28,5 +28,46 @@ quanto mais leitura/escrita tiver no processo, mais lento se torna o sistema.
 
 Formato de exibição do log (LogFormat):
 
+Também no arquivo httpd.conf, temos o "LogFormat", responsável por definir o formato como será
+escrito as mensagens de logs. 
 
+Exemplo de informações:
+
+"%h" -> Ip do Host
+"%t" -> Time
+"%r" -> O request
+"%>s" -> Status code http
+"%b" -> Quantidade de bytes
+"%{User-Agent}" -> Navegador utilizado
+"%t" -> Time em segundos, retorna valores acima de um segundo
+"%D" -> Tempo em decimo de segundos, retorna valores abaixo de um segundo
+
+Exemplo da criação de um LogFormat no "httpd.conf"
+
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %I %o" LogFormatPersonalizado
+
+No arquivo de configuração do host desejado, basta adicionar o arquivo na configuração desejada:
+
+<VirtualHost *:80>
+    ServerAdmin meusite@teste.com
+    DocumentRoot /var/www/teste/html/pagina
+    ServerName www.teste.com.br
+    ErrorLog logs/www.teste.com.br
+    CustomLog logs/www.teste-access_log LogFormatPersonalizado
+</VirtualHost>
+
+É necessário reiniciar o Apache após alterar o arquivo. 
+
+-----------------------------------------------------------------------------
+
+Rotação de Logs:
+
+Arquivos de logs quando não gerenciados acabam por ocupar muito recurso de armazenhamento do servidor, para cuidar
+desse problema, o apache fornece as funcionalidades de CustomLog e RotationLog. Através do
+CustomLog, é possível passar o parâmetro para setar o rotação aplicada nesse log. Ex:
+
+CustomLog "|/usr/sbin/rotatelogs /etc/httpd/logs/www.teste-access_log.%Y-%n-%d-%H_%M_%S 5M" LogFormatPersonalizado
+
+O pipe tem como função permitir que o RotateLogs manipule o arquivo de log seja manipulado. No exemplo acima, o arquivo
+será rotacionado a cada 5M de log
 
