@@ -39,3 +39,18 @@ Restaurando uma imagem do snapshot:
 
 - vagrant snapshot restore aula001 // Acesso no terminal da máquina física.
 Não é possível subir dois serviços no mesmo IP, porta e máquina.
+
+box - manage "boxes"
+destroy - shut down the VM then delete its stored image?
+gem
+halt - shut down the VM
+init - prepare a directory with a new Vagrantfile
+package - shut down the VM, then convert it to a 'package' which can be turned into a box? (Or something)
+provision - run just the provisioning (eg, Chef, Puppet...) stage
+reload - modify the VM configuration (eg, reapply Vagrantfile), reboot the VM, reprovision
+resume - un-suspend (ie, unhibernate)
+ssh - open an SSH shell connection to the VM
+ssh-config
+status
+suspend - hibernate the VM
+up - some or all of: copy a VM image to create a new VM, apply configuration to it, boot it
